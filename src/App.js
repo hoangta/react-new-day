@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Segment } from 'semantic-ui-react'
 import TimeZone, { timeZones } from './TimeZone';
 
 class App extends Component {
@@ -25,12 +25,25 @@ class App extends Component {
     const next = items[items.length - 1]
 
     return (
-      <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: '50%', minWidth: 450 }}>
-          <TimeZone name={current.name} utc={current.hours} />
-          <TimeZone name={next.name} type="next" utc={next.hours} />
-        </Grid.Column>
-      </Grid>
+      <div>
+        <style>{`
+          body > div,
+          body > div > div {
+            height: 100%;
+          }
+        `}</style>
+
+        <Grid textAlign='center' style={{ height: '100%' }}>
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column style={{ height: '80%', maxWidth: '40%', minWidth: 400 }} stretched='true'>
+              <Segment.Group raised>
+                <TimeZone name={current.name} utc={current.hours} />
+                <TimeZone name={next.name} type="next" utc={next.hours} />
+              </Segment.Group>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     );
   }
 }

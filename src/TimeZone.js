@@ -1,25 +1,33 @@
 import React, { Component } from 'react';
-import { Segment } from 'semantic-ui-react'
+import { Segment, Label } from 'semantic-ui-react'
 
 class TimeZone extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+	render() {
 		if (this.props.type !== 'next') {
 			return (
-				<Segment textAlign='center'>Current: {this.props.name}</Segment>
+				<Segment padded='very' style={{ 'font-size': '2.5em' }}>
+					<p>
+						Current: <Label color='red' size='massive'>
+							{this.props.name}
+						</Label>
+					</p>
+				</Segment>
 			);
 		}
 
 		const remaining = -(this.props.utc * 60)
 		const minutes = parseInt(remaining)
-		const seconds = (remaining - minutes) 
-    return (
-			<Segment textAlign='center'>Next: {this.props.name} in {minutes} minutes</Segment>
-    );
-  }
+		const seconds = (remaining - minutes)
+		return (
+			<Segment padded='very' style={{ 'font-size': '2.5em' }}>
+				<p>
+					Next: <Label color='blue' size='massive'>
+							{this.props.name}
+						</Label> in {minutes} minutes
+				</p>
+			</Segment>
+		);
+	}
 }
 
 export default TimeZone;
@@ -31,7 +39,7 @@ export const timeZones = [{
 	utc: -10
 }, {
 	name: 'Taiohae',
-	utc: -9.5 
+	utc: -9.5
 }, {
 	name: 'Rikitea',
 	utc: -9
