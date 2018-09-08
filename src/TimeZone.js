@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './TimeZone.css';
+import { Segment } from 'semantic-ui-react'
 
 class TimeZone extends Component {
   constructor(props) {
@@ -9,9 +9,7 @@ class TimeZone extends Component {
   render() {
 		if (this.props.type !== 'next') {
 			return (
-				<div className="TimeZone">
-					Current: {this.props.name}
-				</div>
+				<Segment textAlign='center'>Current: {this.props.name}</Segment>
 			);
 		}
 
@@ -19,9 +17,7 @@ class TimeZone extends Component {
 		const minutes = parseInt(remaining)
 		const seconds = (remaining - minutes) 
     return (
-			<div className="TimeZone">
-				<p class="TimeZone-name">Next: {this.props.name} in {minutes} minutes</p>
-			</div>
+			<Segment textAlign='center'>Next: {this.props.name} in {minutes} minutes</Segment>
     );
   }
 }
@@ -129,10 +125,4 @@ export const timeZones = [{
 }, {
 	name: 'Chatham Islands',
 	utc: 12.75
-}, {
-	name: 'Apia',
-	utc: 13
-}, {
-	name: 'Kiritimati',
-	utc: 14
 }];
