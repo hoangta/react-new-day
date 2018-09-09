@@ -10,8 +10,10 @@ class App extends Component {
     const items = timeZones
       .map((zone, index) => {
         let hours = zone.utc + utcHours
-        hours = hours % 24 - 24
-
+        if (hours > 0) {
+          hours = hours % 24 - 24
+        }
+        
         return {
           name: zone.name,
           hours

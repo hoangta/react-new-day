@@ -2,6 +2,61 @@ import React, { Component } from 'react';
 import { Segment, Label } from 'semantic-ui-react'
 
 class TimeZone extends Component {
+	constructor(props) {
+		super(props);
+		const remaining = -(this.props.utc * 60)
+		const minutes = parseInt(remaining, 10)
+		const seconds = (remaining - minutes)
+		this.state = { minutes, seconds };
+	}
+
+	componentDidMount() {
+		this.prepareTimer()
+	}
+
+	prepareTimer() {
+		let interval = 0
+		if (this.state.minutes > 0) {
+			interval = this.state.seconds > 0 ? this.state.seconds * 1000 : 60000
+			this.setState({ tick: 'm' })
+		}
+		else if (this.state.seconds > 0) {
+			interval = 1000
+			this.setState({ tick: 's' })
+		}
+		else {
+			return this.updateTimeZones()
+		}
+
+		this.timerID = setTimeout(
+			() => this.tick(),
+			interval
+		);
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timerID);
+	}
+
+	updateTimeZones() {
+
+	}
+
+	tick() {
+		if (this.state.tick === 'm') {
+			this.setState({
+				minutes: this.state.minutes - 1,
+				seconds: 0
+			});
+		} else {
+			this.setState({
+				seconds: this.state.seconds - 1
+			});
+		}
+
+		this.prepareTimer()
+	}
+
 	render() {
 		if (this.props.type !== 'next') {
 			return (
@@ -15,15 +70,12 @@ class TimeZone extends Component {
 			);
 		}
 
-		const remaining = -(this.props.utc * 60)
-		const minutes = parseInt(remaining)
-		const seconds = (remaining - minutes)
 		return (
 			<Segment padded='very' style={{ 'font-size': '2.5em' }}>
 				<p>
 					Next: <Label color='blue' size='massive'>
-							{this.props.name}
-						</Label> in {minutes} minutes
+						{this.props.name}
+					</Label> in {this.state.minutes} minutes
 				</p>
 			</Segment>
 		);
