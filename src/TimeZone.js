@@ -4,14 +4,16 @@ import { Segment, Label } from 'semantic-ui-react'
 class TimeZone extends Component {
 	constructor(props) {
 		super(props);
-		const remaining = -(this.props.utc * 60)
+		const remaining = -(this.props.timezone.hours * 60)
 		const minutes = parseInt(remaining, 10)
-		const seconds = (remaining - minutes)
-		this.state = { minutes, seconds };
+		const seconds = (remaining - minutes) * 60
+		this.state = { minutes, seconds: parseInt(seconds, 10) };
 	}
 
 	componentDidMount() {
-		this.prepareTimer()
+		if (this.props.type === 'next') {
+			this.prepareTimer()
+		}
 	}
 
 	prepareTimer() {
@@ -20,14 +22,15 @@ class TimeZone extends Component {
 			interval = this.state.seconds > 0 ? this.state.seconds * 1000 : 60000
 			this.setState({ tick: 'm' })
 		}
-		else if (this.state.seconds > 0) {
+		else if (this.state.seconds > 55) {
 			interval = 1000
 			this.setState({ tick: 's' })
 		}
 		else {
 			return this.updateTimeZones()
 		}
-
+		console.log(22);
+		
 		this.timerID = setTimeout(
 			() => this.tick(),
 			interval
@@ -39,7 +42,7 @@ class TimeZone extends Component {
 	}
 
 	updateTimeZones() {
-
+		this.props.onTimeZoneUpdate()
 	}
 
 	tick() {
@@ -53,29 +56,39 @@ class TimeZone extends Component {
 				seconds: this.state.seconds - 1
 			});
 		}
-
+		
 		this.prepareTimer()
 	}
 
 	render() {
 		if (this.props.type !== 'next') {
 			return (
-				<Segment padded='very' style={{ 'font-size': '2.5em' }}>
+				<Segment padded='very' style={{ 'fontSize': '2.5em' }}>
 					<p>
 						Current: <Label color='red' size='massive'>
-							{this.props.name}
+							{this.props.timezone.name}
 						</Label>
 					</p>
 				</Segment>
 			);
 		}
 
+		let value;
+		let unit;
+		if (this.state.tick === 'm') {
+			value = this.state.minutes
+			unit = 'minutes'
+		} else {
+			value = this.state.seconds
+			unit = 'seconds'
+		}
+
 		return (
-			<Segment padded='very' style={{ 'font-size': '2.5em' }}>
+			<Segment padded='very' style={{ 'fontSize': '2.5em' }}>
 				<p>
 					Next: <Label color='blue' size='massive'>
-						{this.props.name}
-					</Label> in {this.state.minutes} minutes
+						{this.props.timezone.name}
+					</Label> in {value} {unit}
 				</p>
 			</Segment>
 		);

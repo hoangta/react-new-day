@@ -4,5 +4,10 @@ import 'semantic-ui-css/semantic.min.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+function switchTimeZone() {
+    ReactDOM.render(<App updateTimeZones={switchTimeZone}/>, document.getElementById('root'));
+};
+switchTimeZone()
+// ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
+
